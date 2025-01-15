@@ -1,0 +1,19 @@
+{
+  "name": "roshan-heat-map",
+  "version": "1.0.0",
+  "description": "A customizable heatmap component for React.",
+  "main": "index.js",
+  "scripts": {
+    "test": "npm run test "
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/doTryCatch/cal-heatmap.git"
+  },
+  "author": "Roshan Kumar Patel",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/doTryCatch/cal-heatmap/issues"
+  },
+  "homepage": "https://github.com/doTryCatch/cal-heatmap#readme"
+}
