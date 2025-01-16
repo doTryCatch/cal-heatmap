@@ -56,18 +56,17 @@ const HeatMap: React.FC<HeatMapProps> = ({
   dayBgColor = '',
   gridBgColor = '',
   data
-}) :JSX.Element=> {
+}): JSX.Element => {
   const [currentYear, setYear] = useState(year);
   const [dates, setDates] = useState<string[]>([]);
   const [months, setMonths] = useState<string[]>([]);
 
-  // This effect fetches all the dates and months for the given year
   useEffect(() => {
     const getAllDates = (year: number) => {
       const dates: string[] = [];
       const months: string[] = [];
-      const startDate = new Date(year, 0, 1); // January 1st of the given year
-      const endDate = new Date(year, 11, 31); // December 31st of the given year
+      const startDate = new Date(year, 0, 1);
+      const endDate = new Date(year, 11, 31);
 
       let currentDate = new Date(startDate);
       while (currentDate <= endDate) {
@@ -77,7 +76,7 @@ const HeatMap: React.FC<HeatMapProps> = ({
         dates.push(`${year}-${month}-${day}`);
         let mon = currentDate.toLocaleString('default', { month: monthFormat === 'short' ? 'short' : 'long' });
         if (!months.find((month) => month === mon)) months.push(mon);
-        currentDate = new Date(currentDate.getTime() + 24 * 60 * 60 * 1000); // Add 1 day
+        currentDate = new Date(currentDate.getTime() + 24 * 60 * 60 * 1000);
       }
 
       return { date: dates, month: months };
@@ -88,13 +87,12 @@ const HeatMap: React.FC<HeatMapProps> = ({
     setMonths(month);
   }, [currentYear, monthFormat]);
 
-  // This effect sets up the tooltip logic for each box element
   useEffect(() => {
     const showMsg = (elem: HTMLElement) => {
       const boxMsg = document.createElement('div');
       boxMsg.classList.add('msg-box');
       boxMsg.style.position = 'absolute';
-      boxMsg.textContent = elem.getAttribute('data-content') || ''; // Correctly access the 'data-content' attribute
+      boxMsg.textContent = elem.getAttribute('data-content') || '';
       boxMsg.style.backgroundColor = backgroundColor;
       boxMsg.style.marginTop = '-40px';
       boxMsg.style.padding = padding;
@@ -111,14 +109,12 @@ const HeatMap: React.FC<HeatMapProps> = ({
       }
     };
 
-    // Add event listeners to show/hide the tooltips
     const allBoxElems = document.querySelectorAll('.box');
     allBoxElems.forEach((elem) => {
       elem.addEventListener('mouseenter', () => showMsg(elem as HTMLElement));
       elem.addEventListener('mouseleave', () => dropMsg(elem as HTMLElement));
     });
 
-    // Clean up event listeners on component unmount
     return () => {
       allBoxElems.forEach((elem) => {
         elem.removeEventListener('mouseenter', () => showMsg(elem as HTMLElement));
@@ -128,44 +124,41 @@ const HeatMap: React.FC<HeatMapProps> = ({
   }, [dates, backgroundColor, padding, borderRadius, boxShadow, textColor]);
 
   return (
-    <section className="heatmap w-full flex space-x-4">
-      <div className="map-area" style={{ backgroundColor: gridBgColor }}>
+    <section style={{ display: 'flex', width: '100%', gap: '16px' }}>
+      <div style={{ backgroundColor: gridBgColor, flex: 1 }}>
         {monthLabels && (
-          <div 
-            className="month text-sm flex space-x-[30px] px-6" 
-            style={{ backgroundColor: monthBgColor, marginTop: monthMarginTop, marginLeft: monthMarginLeft }}
+          <div
+            style={{
+              display: 'flex',
+              gap: '30px',
+              padding: '0 24px',
+              backgroundColor: monthBgColor,
+              marginTop: monthMarginTop,
+              marginLeft: monthMarginLeft,
+              fontSize: monthFontSize,
+              color: monthTextColor
+            }}
           >
             {months.map((month, index) => (
-              <span
-                key={index}
-                style={{
-                  color: monthTextColor,
-                  fontSize: monthFontSize,
-                }}
-              >
-                {month}
-              </span>
+              <span key={index}>{month}</span>
             ))}
           </div>
         )}
-        <div className="flex space-x-4">
+        <div style={{ display: 'flex', gap: '16px' }}>
           {dayLabelsVisible && (
-            <div 
-              className="days"
+            <div
               style={{
                 backgroundColor: dayBgColor,
                 marginTop: dayMarginTop,
                 marginLeft: dayMarginLeft,
+                fontSize: dayFontSize,
+                color: dayTextColor,
               }}
             >
               {dayLabels.map((day, index) => (
                 <span
-                  className="block text-[12px] my-[12px]"
                   key={index}
-                  style={{
-                    color: dayTextColor,
-                    fontSize: dayFontSize,
-                  }}
+                  style={{ display: 'block', margin: '12px 0', fontSize: dayFontSize }}
                 >
                   {day}
                 </span>
@@ -174,16 +167,14 @@ const HeatMap: React.FC<HeatMapProps> = ({
           )}
 
           <div
-            className="map"
             style={{
-              display: "grid",
-              margin: "10px 10px",
-              gridTemplateRows: "repeat(7, 10px)",
-              gridAutoFlow: "column",
+              display: 'grid',
+              margin: '10px',
+              gridTemplateRows: 'repeat(7, 10px)',
+              gridAutoFlow: 'column',
               columnGap: gridGap,
               rowGap: gridGap,
-              width: "auto",
-              backgroundColor: gridBgColor, // Grid background color
+              backgroundColor: gridBgColor
             }}
           >
             {dates.map((date, index) => {
@@ -191,14 +182,15 @@ const HeatMap: React.FC<HeatMapProps> = ({
               const color = colorRange[Math.min(intensity, colorRange.length - 1)];
               return (
                 <span
-                  className="rounded-sm box"
+                  key={index}
                   data-content={`${intensity} contribution on ${date}`}
                   style={{
+                    display: 'block',
+                    borderRadius: '4px',
                     width: boxSize,
                     height: boxSize,
-                    backgroundColor: color,
+                    backgroundColor: color
                   }}
-                  key={index}
                 ></span>
               );
             })}
