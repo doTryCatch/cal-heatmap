@@ -88,14 +88,14 @@ const HeatMap: React.FC<HeatMapProps> = ({
   }, [currentYear, monthFormat]);
 
  useEffect(() => {
-  const showMsg = (elem:HTMLDivElement, x:number, y:number) => {
+  const showMsg = (elem: HTMLDivElement, x: number, y: number) => {
     const boxMsg = document.createElement('div');
     boxMsg.classList.add('msgBox');
     boxMsg.style.position = 'absolute';
-    boxMsg.style.top = `${window.scrollY+y}px`; // Use the Y coordinate from mouse event
-    boxMsg.style.left = `${window.scrollX+ x-40}px`; // Use the X coordinate from mouse event
-    boxMsg.style.marginTop='-40px'
-    boxMsg.textContent = elem.getAttribute('data-content');
+    boxMsg.style.top = `${window.scrollY + y}px`; // Use the Y coordinate from mouse event
+    boxMsg.style.left = `${window.scrollX + x - 40}px`; // Use the X coordinate from mouse event
+    boxMsg.style.marginTop = '-40px';
+    boxMsg.textContent = elem.getAttribute('data-content') || '';
     boxMsg.style.backgroundColor = backgroundColor;
     boxMsg.style.padding = padding;
     boxMsg.style.borderRadius = borderRadius;
@@ -111,31 +111,30 @@ const HeatMap: React.FC<HeatMapProps> = ({
     }
   };
 
-  const handleMouseEnter = (e:React.MouseEvent<HTMLDivElement>) => {
-    const elem = e.currentTarget;
-    showMsg(elem, e.clientX, e.clientY); // Use clientX and clientY for positioning
+  const handleMouseEnter = (e: MouseEvent) => {
+    const elem = e.currentTarget as HTMLDivElement;
+    if (elem) {
+      showMsg(elem, e.clientX, e.clientY); // Use clientX and clientY for positioning
+    }
   };
 
   const handleMouseLeave = () => {
     dropMsg();
   };
 
-  // Attach event listeners
-  const allBoxElems = document.querySelectorAll('.box');
+  const allBoxElems = document.querySelectorAll<HTMLDivElement>('.box');
   allBoxElems.forEach((elem) => {
-    elem.addEventListener('mouseenter', handleMouseEnter);
-    elem.addEventListener('mouseleave', handleMouseLeave);
+    elem.addEventListener('mouseenter', handleMouseEnter as EventListener);
+    elem.addEventListener('mouseleave', handleMouseLeave as EventListener);
   });
 
-  // Clean up event listeners on component unmount
   return () => {
     allBoxElems.forEach((elem) => {
-      elem.removeEventListener('mouseenter', handleMouseEnter);
-      elem.removeEventListener('mouseleave', handleMouseLeave);
+      elem.removeEventListener('mouseenter', handleMouseEnter as EventListener);
+      elem.removeEventListener('mouseleave', handleMouseLeave as EventListener);
     });
   };
-}, [dates, backgroundColor, padding, borderRadius, boxShadow, textColor]);
-  return (
+}, [dates, backgroundColor, padding, borderRadius, boxShadow, textColor]);  return (
     <section style={{ display: 'flex', width: '100%', gap: '16px' }}>
       <div style={{ backgroundColor: gridBgColor, flex: 1 }}>
         {monthLabels && (
