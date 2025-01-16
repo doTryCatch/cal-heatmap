@@ -1,17 +1,24 @@
 {
-  "name": "my-npm-lib",
+  "name": "@roshan/cal-heatmap",
   "version": "1.0.0",
-  "description": "",
- "main": "dist/heat-map-rp.js",
+  "description": "A customizable heatmap calendar library, inspired by GitHub's contribution heatmap.",
+  "main": "dist/heat-map-rp.js",
   "module": "dist/heat-map-rp.mjs",
-  "types": "dist/heat-map-rp.d.ts" ,
+  "types": "dist/heat-map-rp.d.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsup ./src"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "keywords": [
+    "heatmap",
+    "calendar",
+    "github-style",
+    "react",
+    "typescript",
+    "customizable"
+  ],
+  "author": "Roshan Patel",
+  "license": "MIT",
   "devDependencies": {
     "@types/react": "^19.0.7",
     "@types/react-dom": "^19.0.3",
