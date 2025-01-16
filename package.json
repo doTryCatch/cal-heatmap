@@ -1,6 +1,6 @@
 {
   "name": "@rp-raone/cal-heatmap",
-  "version": "1.0.3",
+  "version": "2.0.0",
   "description": "A customizable heatmap calendar library, inspired by GitHub's contribution heatmap.",
   "main": "dist/heat-map-rp.js",
   "module": "dist/heat-map-rp.mjs",

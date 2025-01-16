@@ -87,42 +87,54 @@ const HeatMap: React.FC<HeatMapProps> = ({
     setMonths(month);
   }, [currentYear, monthFormat]);
 
-  useEffect(() => {
-    const showMsg = (elem: HTMLElement) => {
-      const boxMsg = document.createElement('div');
-      boxMsg.classList.add('msg-box');
-      boxMsg.style.position = 'absolute';
-      boxMsg.textContent = elem.getAttribute('data-content') || '';
-      boxMsg.style.backgroundColor = backgroundColor;
-      boxMsg.style.marginTop = '-40px';
-      boxMsg.style.padding = padding;
-      boxMsg.style.borderRadius = borderRadius;
-      boxMsg.style.boxShadow = boxShadow;
-      boxMsg.style.color = textColor;
-      elem.appendChild(boxMsg);
-    };
+ useEffect(() => {
+  const showMsg = (elem:HTMLDivElement, x:number, y:number) => {
+    const boxMsg = document.createElement('div');
+    boxMsg.classList.add('msgBox');
+    boxMsg.style.position = 'absolute';
+    boxMsg.style.top = `${window.scrollY+y}px`; // Use the Y coordinate from mouse event
+    boxMsg.style.left = `${window.scrollX+ x-40}px`; // Use the X coordinate from mouse event
+    boxMsg.style.marginTop='-40px'
+    boxMsg.textContent = elem.getAttribute('data-content');
+    boxMsg.style.backgroundColor = backgroundColor;
+    boxMsg.style.padding = padding;
+    boxMsg.style.borderRadius = borderRadius;
+    boxMsg.style.boxShadow = boxShadow;
+    boxMsg.style.color = textColor;
+    document.body.appendChild(boxMsg); // Append the tooltip to the body
+  };
 
-    const dropMsg = (elem: HTMLElement) => {
-      const msgBox = elem.querySelector('.msg-box');
-      if (msgBox) {
-        msgBox.remove();
-      }
-    };
+  const dropMsg = () => {
+    const msgBox = document.querySelector('.msgBox');
+    if (msgBox) {
+      msgBox.remove();
+    }
+  };
 
-    const allBoxElems = document.querySelectorAll('.box');
+  const handleMouseEnter = (e:React.MouseEvent<HTMLDivElement>) => {
+    const elem = e.currentTarget;
+    showMsg(elem, e.clientX, e.clientY); // Use clientX and clientY for positioning
+  };
+
+  const handleMouseLeave = () => {
+    dropMsg();
+  };
+
+  // Attach event listeners
+  const allBoxElems = document.querySelectorAll('.box');
+  allBoxElems.forEach((elem) => {
+    elem.addEventListener('mouseenter', handleMouseEnter);
+    elem.addEventListener('mouseleave', handleMouseLeave);
+  });
+
+  // Clean up event listeners on component unmount
+  return () => {
     allBoxElems.forEach((elem) => {
-      elem.addEventListener('mouseenter', () => showMsg(elem as HTMLElement));
-      elem.addEventListener('mouseleave', () => dropMsg(elem as HTMLElement));
+      elem.removeEventListener('mouseenter', handleMouseEnter);
+      elem.removeEventListener('mouseleave', handleMouseLeave);
     });
-
-    return () => {
-      allBoxElems.forEach((elem) => {
-        elem.removeEventListener('mouseenter', () => showMsg(elem as HTMLElement));
-        elem.removeEventListener('mouseleave', () => dropMsg(elem as HTMLElement));
-      });
-    };
-  }, [dates, backgroundColor, padding, borderRadius, boxShadow, textColor]);
-
+  };
+}, [dates, backgroundColor, padding, borderRadius, boxShadow, textColor]);
   return (
     <section style={{ display: 'flex', width: '100%', gap: '16px' }}>
       <div style={{ backgroundColor: gridBgColor, flex: 1 }}>
@@ -183,10 +195,11 @@ const HeatMap: React.FC<HeatMapProps> = ({
               return (
                 <span
                   key={index}
+                  className={"box"}
                   data-content={`${intensity} contribution on ${date}`}
                   style={{
                     display: 'block',
-                    borderRadius: '4px',
+                    borderRadius: '2px',
                     width: boxSize,
                     height: boxSize,
                     backgroundColor: color
