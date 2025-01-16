@@ -17,14 +17,14 @@ The `HeatMap` component provides an easy way to display a customizable heatmap v
 To install the component in a React application, use npm:
 
 ```bash
-npm install heat-map-component
+npm install @rp-raone/cal-heatmap
 ```
 ### In React
 
 Import the component into your React project and use it with your data.
 
 ```tsx
-import HeatMap from 'heat-map-component';
+import HeatMap from '@rp-raone/cal-heatmap';
 
 const App = () => {
   const heatmapData = {
