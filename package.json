@@ -1,19 +1,21 @@
 {
-  "name": "roshan-heat-map",
+  "name": "my-npm-lib",
   "version": "1.0.0",
-  "description": "A customizable heatmap component for React.",
-  "main": "index.js",
+  "description": "",
+ "main": "dist/heat-map-rp.js",
+  "module": "dist/heat-map-rp.mjs",
+  "types": "dist/heat-map-rp.d.ts" ,
   "scripts": {
-    "test": "npm run test "
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsup ./src"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/doTryCatch/cal-heatmap.git"
-  },
-  "author": "Roshan Kumar Patel",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/doTryCatch/cal-heatmap/issues"
-  },
-  "homepage": "https://github.com/doTryCatch/cal-heatmap#readme"
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/react": "^19.0.7",
+    "@types/react-dom": "^19.0.3",
+    "tsup": "^8.3.5",
+    "typescript": "^5.7.3"
+  }
 }
