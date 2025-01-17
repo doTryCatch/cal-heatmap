@@ -3,7 +3,7 @@
 The `HeatMap` component is a powerful and customizable heatmap visualization tool for React applications. It renders a grid-based representation of data, making it ideal for visualizing date-specific values like contributions, attendance, or any other time-based data trends.
 
 ---
-![My Image](public/image/heatmap.png)
+![My Image](public/images/heatmap.png)
 ---
 
 ## 🌟 Features
@@ -57,6 +57,7 @@ const App = () => {
 };
 
 export default App;
+```
 ## 🌈 Props Configuration
 
 | Prop               | Type                | Default       | Description                                                                 |
@@ -87,6 +88,7 @@ export default App;
 | `dayBgColor`       | `string`           | `"#fff"`      | Background color for day labels.                                           |
 | `gridBgColor`      | `string`           | `"#fff"`      | Background color for the grid.                                             |
 | `data`             | `Record<string, number>` | `{}`         | Object with dates as keys and values representing intensity (e.g., `{ "2025-01-01": 5 }`). |
+
 ## 🎨 Styling Tips
 - Use `colorRange` to represent varying data intensities effectively.
 - Customize `textColor` for better readability based on your theme.
